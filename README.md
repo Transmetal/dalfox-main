@@ -1,32 +1,4 @@
-<h1 align="center">
-  <br>
-  <a href=""><img src="https://user-images.githubusercontent.com/13212227/120111054-49ffc780-c1ab-11eb-974e-e198d53ddb48.png" alt="" width="300px;"></a>
-  <br>🌙🦊=XSS<br>
-</h1>
-<p align="center">
-  <a href="https://github.com/hahwul/dalfox/actions/workflows/go.yml"><img src="https://github.com/hahwul/dalfox/actions/workflows/go.yml/badge.svg"></a>
-  <a href=""><img src="https://api.codacy.com/project/badge/Grade/17cac7b8d1e849a688577f2bbdd6ecd0"></a>
-  <a href="https://goreportcard.com/report/github.com/hahwul/dalfox"><img src="https://goreportcard.com/badge/github.com/hahwul/dalfox"></a>
-  <a href="https://codecov.io/gh/hahwul/dalfox"><img src="https://codecov.io/gh/hahwul/dalfox/branch/main/graph/badge.svg"/></a>
-  <a href="https://twitter.com/intent/follow?screen_name=hahwul"><img src="https://img.shields.io/twitter/follow/hahwul?style=flat&logo=twitter"></a>
-  <a href=""><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a>
-</p>
-
 DalFox is an powerful open source XSS scanning tool and parameter analyzer and utility that fast the process of detecting and verify XSS flaws. It comes with a powerful testing engine, many niche features for the cool hacker!
-
-I talk about naming. Dal([달](https://en.wiktionary.org/wiki/달)) is the Korean pronunciation of moon, and Fox are made to mean "Finder Of XSS" or 🦊
-
-## TOC
-- [Key features](#key-features)
-- [How to Install](#how-to-install)
-- [Usage](#usage)
-- [POC format](#poc-format)
-- [In the Code](#in-the-code)
-- [Screenshots](#screenshots)
-- [Wiki](#wiki)
-- [Question](#question)
-- [Changelog](#changelog)
-- [Contributing](#contributing)
 
 ## Key features
 Mode: `url` `sxss` `pipe` `file` `server` `payload`
@@ -116,75 +88,7 @@ Sample poc log
 [POC][V][GET] http://testphp.vulnweb.com/listproducts.php?artist=123&asdf=ff&cat=123%22%3E%3Csvg%2Fclass%3D%22dalfox%22onLoad%3Dalert%2845%29%3E
 ```
 
-Format
-| Identity | Type | Information                     | BLANK | PoC Code                                                     |
-| -------- | ---- | ------------------------------- | ----- | ------------------------------------------------------------ |
-| POC      | G    | BUILT-IN/dalfox-error-mysql/GET |       | http://testphp.vulnweb.com/listproducts.php?artist=123&asdf=ff&cat=123DalFox |
-| POC      | R    | GET                             |       | http://testphp.vulnweb.com/listproducts.php?artist=123&asdf=ff&cat=123%22%3E%3Csvg%2Fclass%3D%22dalfox%22onLoad%3Dalert%2845%29%3E |
-| POC      | V    | GET                             |       | http://testphp.vulnweb.com/listproducts.php?artist=123&asdf=ff&cat=123%22%3E%3Csvg%2Fclass%3D%22dalfox%22onLoad%3Dalert%2845%29%3E |
-
-- Type: `G`(Grep) , `R`(Reflected) , ` V`(Verify)
-- Informatin: Method, grepping name, etc..
-
-Why is there a gap?
-It is a method to make it easier to parse only the poc code through cut etc. For example, you can do this.
-```shell
-▶ dalfox url http://testphp.vulnweb.com/listproducts.php\?cat\=123\&artist\=123\&asdf\=ff | cut -d " " -f 2 > output
-▶ cat output
-http://testphp.vulnweb.com/listproducts.php?artist=123&asdf=ff&cat=123DalFox
-http://testphp.vulnweb.com/listproducts.php?artist=123&asdf=ff&cat=123%22%3E%3Csvg%2FOnLoad%3D%22%60%24%7Bprompt%60%60%7D%60%22+class%3Ddalfox%3E
-```
-
-## In the code
-```go
-package main
-
-import (
-	"fmt"
-
-	dalfox "github.com/hahwul/dalfox/v2/lib"
-)
-
-func main() {
-	opt := dalfox.Options{
-		Cookie:     "ABCD=1234",
-	}
-	result, err := dalfox.NewScan(dalfox.Target{
-		URL:     "https://xss-game.appspot.com/level1/frame",
-		Method:  "GET",
-		Options: opt,
-	})
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(result)
-	}
-}
-```
-
 ```
 $ go build -o xssapp ; ./xssapp
 [] [{V GET https://xss-game.appspot.com/level1/frame?query=%3Ciframe+srcdoc%3D%22%3Cinput+onauxclick%3Dprint%281%29%3E%22+class%3Ddalfox%3E%3C%2Fiframe%3E}] 2.618998247s 2021-07-11 10:59:26.508483153 +0900 KST m=+0.000794230 2021-07-11 10:59:29.127481217 +0900 KST m=+2.619792477}
 ```
-
-## Screenshots
-| ![1414](https://user-images.githubusercontent.com/13212227/108603497-7a390c80-73eb-11eb-92c1-b31bd9574861.jpg) | ![1415](https://user-images.githubusercontent.com/13212227/108603373-ebc48b00-73ea-11eb-9651-7ce4617845f6.jpg) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Single URL Scanning                                          | Massive(Multicast/Mass) Scanning                             |
-| ![1416](https://user-images.githubusercontent.com/13212227/108603375-ec5d2180-73ea-11eb-8e6e-d59d915c0291.jpg) | ![1417](https://user-images.githubusercontent.com/13212227/108613244-66b19400-7433-11eb-87fc-2f195f9011b3.jpg) |
-| REST API Server Mode                                 | Output and Customizing (found-action / grepping)              |
-
-## Wiki
-[Wiki](https://dalfox.hahwul.com/docs/home/)
-
-## Question
-Please use [discussions](https://github.com/hahwul/dalfox/discussions) actively!
-
-## Changelog
-Detailed changes for each release are documented in the [release notes](https://github.com/hahwul/dalfox/releases).
-
-## Contributing
-DalFox's open-source project and made it with ❤️
-if you want contribute this project, please see [CONTRIBUTING.md](https://github.com/hahwul/dalfox/blob/main/CONTRIBUTING.md) and Pull-Request with cool your contents.
-
-[![](/CONTRIBUTORS.svg)](https://github.com/hahwul/dalfox/graphs/contributors)
