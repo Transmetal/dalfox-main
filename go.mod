@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
-	github.com/briandowns/spinner v1.18.1
+	github.com/briandowns/spinner v1.20.0
 	github.com/chromedp/cdproto v0.0.0-20220321060548-7bc2623472b3
 	github.com/chromedp/chromedp v0.8.0
 	github.com/hahwul/volt v1.0.5
@@ -17,7 +17,7 @@ require (
 	github.com/swaggo/echo-swagger v1.3.2
 	github.com/swaggo/swag v1.8.3
 	github.com/tylerb/graceful v1.2.15
-	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
+	golang.org/x/term v0.1.0
 )
 
 require (
